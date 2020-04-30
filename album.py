@@ -31,11 +31,6 @@ def find(artist):
     return albums
 
 def save_new_album(year, artist, genre, album):
-    assert isinstance(year, int), "Incorrect year"
-    assert isinstance(artist, str), "Incorrect artist"
-    assert isinstance(genre, str), "Incorrect genre"
-    assert isinstance(album, str), "Incorrect album"
-
     session = connect_db()
     saved_album = session.query(Album).filter(Album.artist == artist, Album.album == album).first()
 
