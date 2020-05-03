@@ -30,14 +30,18 @@ def find(artist):
     albums = session.query(Album).filter(Album.artist == artist).all()
     return albums
 
-def save_new_album(year, artist, genre, album):
-    session = connect_db()
-    saved_album = session.query(Album).filter(Album.artist == artist, Album.album == album).first()
+def save_new(year, artist, genre, album):
+    assert isinstance(year, int), "Incorrect date"
+    assert isinstance(artist, str), "Incorrect artist"
+    assert isinstance(genre, str), "Incorrect genre"
+    assert isinstance(album, str), "Incorrect album"
 
+    session = connect_db()
+    saved_album = session.query(Album).filter(Album.album == album, Album.artist == artist).first()
     if saved_album is not None:
-        raise AlreadyInDB("The album already exists in the database by the id {}".format(saved_album.id))
+        raise AlreadyInDB("The album {} already exists in the database by the id {}".format(saved_album.album, saved_album.id))
 
     album = Album(year=year, artist=artist, genre=genre, album=album)
     session.add(album)
     session.commit()
-    return album    
+    return album
